@@ -1,5 +1,11 @@
-TestPage/
 *.html~
 .gitignore~
 *.css~
 *.js~
+bower_components/
+components/
+app.css
+app.js
+*.mp4
+index.html
+videogular.css
