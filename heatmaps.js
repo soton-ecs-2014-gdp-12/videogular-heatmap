@@ -1,6 +1,7 @@
 'use strict';
 angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
-.directive('vgHeatmaps', [function() {
+
+.directive('vgHeatmaps', ["VG_STATES", function(VG_STATES) {
 	return {
 		restrict: 'E',
 		require: '^videogular',
@@ -18,20 +19,81 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 				}
 			}
 			updateTheme($scope.theme);
+
+			function onUpdateState(newState, videoTime) {
+				switch (newState) {
+					case VG_STATES.PLAY:
+						eventsToPeriods('play', API.currentTime);
+						break;
+					case VG_STATES.STOP:
+						eventsToPeriods('stop', API.currentTime);		
+						break;
+					case VG_STATES.PAUSE:
+						eventsToPeriods('pause', API.currentTime);
+						break;
+				}
+			}
+
+			$scope.periods = [];
+			$scope.currentPeriod = {};
+
+			function eventsToPeriods(name,time) {
+				var i = 0;
+				
+				if (name == "play"){
+					$scope.currentPeriod.start = new Date(time);
+				} else {
+					$scope.currentPeriod.end = new Date(time);
+					if ($scope.currentPeriod.start !== undefined){
+						$scope.periods.push($scope.currentPeriod);
+					}
+					$scope.currentPeriod = {};
+				}		
+			}
+
+			$scope.$watch(
+				function () {
+					return API.currentState;
+				},
+				function (newVal, oldVal) {
+					if (newVal != oldVal) {
+						onUpdateState(newVal, API.currentTime);
+					}
+				}
+			);
 		},
 	};
+}])
+
+.directive('vgCompletedheatmap',[function() {
+	return {
+		restrict: 'E',
+		require: '^videogular',
+		link: function(scope, elem, attr, API) {
+			
+		}
+	}
 }])
 
 .directive('vgHeatmap', [function() {
 	return {
 		restrict: 'E',
 		require: '^videogular',
-		link: function(scope, elem, attr, API) {
+		link: function($scope, elem, attr, API) {
+			var left = 0;
+
+			function startPercent(startVal) {
+				if (startVal !== undefined){
+					left = (startVal * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);		
+				}
+				elem.css("left", left + "%");
+			}
+
 			var percentTime = 0;
 
 			function onUpdateTime(newCurrentTime) {
 				if (newCurrentTime && API.totalTime) {
-					percentTime = (newCurrentTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
+					percentTime = (newCurrentTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000) - left;
 					elem.css("width", percentTime + "%");
 				}
 			}
@@ -41,7 +103,7 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 				elem.css("width", percentTime + "%");
 			}
 
-			scope.$watch(
+			$scope.$watch(
 				function () {
 					return API.currentTime;
 				},
@@ -50,7 +112,17 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 				}
 			);
 
-			scope.$watch(
+			$scope.$watch(
+				function () {
+					return $scope.currentPeriod.start;
+				},
+				function (newVal, oldVal) {
+					console.dir($scope.currentPeriod);
+					startPercent(newVal);
+				}
+			);
+
+			$scope.$watch(
 				function () {
 					return API.isCompleted;
 				},
