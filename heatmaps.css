@@ -15,3 +15,11 @@ videogular vg-heatmaps vg-heatmap {
 
 	background-color: red;
 }
+
+videogular vg-heatmaps vg-completed-heatmap {
+	position: absolute;
+
+	display: block;
+	height: 50px;
+
+}
