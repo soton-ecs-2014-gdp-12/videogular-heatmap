@@ -40,12 +40,12 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 				function (newVal, oldVal) {	
 					if (newVal !== 0 && (oldVal == 0 || newVal.getTime() != oldVal.getTime())){
 						var val = $scope.$eval(attr.$attr.begin);
-						var startTime = new Date(val.substr(5,val.length-5));
+						var startTime = new Date(val);
 						var left = (startTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
 						elem.css("left", left + "%");
 		
 						val = $scope.$eval(attr.$attr.finish);
-						var endTime = new Date(val.substr(5,val.length-5)); //delete 'Date ' from front
+						var endTime = new Date(val); 
 						var right = ((API.totalTime.getTime() - endTime.getTime()) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
 						elem.css("right", right + "%");
 		
