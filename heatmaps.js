@@ -1,6 +1,6 @@
 'use strict';
 angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', 
-['uk.ac.soton.ecs.videogular.plugins.heatmaps.completed', 'uk.ac.soton.ecs.videogular.plugins.heatmaps.progress'])
+['uk.ac.soton.ecs.videogular.plugins.heatmaps.completed'])
 
 .directive('vgHeatmaps', ["VG_STATES", function(VG_STATES) {
 	return {
@@ -20,51 +20,8 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps',
 				}
 			}
 			updateTheme($scope.theme);
-
-			function onUpdateState(newState) {
-				switch (newState) {
-					case VG_STATES.PLAY:
-						eventsToPeriods('play', API.currentTime);
-						break;
-					case VG_STATES.STOP:
-						eventsToPeriods('stop', API.currentTime);		
-						break;
-					case VG_STATES.PAUSE:
-						eventsToPeriods('pause', API.currentTime);
-						break;
-				}
-			}
-
-			$scope.periods = [];
-			$scope.currentPeriod = {};
-
-			function eventsToPeriods(name,time) {
-				var i = 0;
-				
-				if (name == "play"){
-					$scope.currentPeriod.start = new Date(time);
-					$scope.currentPeriod.id = $scope.periods.length;
-				} else {
-					$scope.currentPeriod.end = new Date(time);
-					if ($scope.currentPeriod.start !== undefined){
-						$scope.periods.push($scope.currentPeriod);
-					}
-					$scope.currentPeriod = {};
-				}		
-			}
-
-			$scope.$watch(
-				function () {
-					return API.currentState;
-				},
-				function (newVal, oldVal) {
-					if (newVal != oldVal) {
-						onUpdateState(newVal);
-					}
-				}
-			);
-		},
-	};
+		}
+	}
 }]);
 
 angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps.completed', [])
@@ -75,82 +32,43 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps.completed', [])
 		scope: {
 			begin: '@',
 			finish: '@',
+			frequency: '@',
 		},
 		link: function($scope, elem, attr, API) {
-			var left = 0;
-			attr.$observe(attr.$attr.begin, function(val) {
-				var startTime = new Date(val.substr(1,val.length-2));
-				left = (startTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
-				elem.css("left", left + "%");
-			});
-
-			var right = 0;
-			attr.$observe(attr.$attr.finish, function(val) {
-				var endTime = new Date(val.substr(1,val.length-2));
-				right = ((API.totalTime.getTime() - endTime.getTime()) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
-				elem.css("right", right + "%");
-			});
-
-			elem.css("background-color", "green");
+			$scope.$watch(
+				function () {
+					return API.totalTime;
+				},
+				function (newVal, oldVal) {	
+					if (newVal !== 0 && (oldVal == 0 || newVal.getTime() != oldVal.getTime())){
+						var val = $scope.$eval(attr.$attr.begin);
+						var startTime = new Date(val.substr(5,val.length-5));
+						var left = (startTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
+						elem.css("left", left + "%");
+		
+						val = $scope.$eval(attr.$attr.finish);
+						var endTime = new Date(val.substr(5,val.length-5));
+						console.log(endTime);
+						var right = ((API.totalTime.getTime() - endTime.getTime()) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
+						elem.css("right", right + "%");
+		
+						var val = $scope.$eval(attr.$attr.frequency);
+						if (val == 1){
+							elem.css("background-color", "indigo");
+						} else if (val < 4){
+							elem.css("background-color", "blue");
+						} else if (val < 6){
+							elem.css("background-color", "green");
+						} else if (val < 8){
+							elem.css("background-color", "yellow");
+						} else if (val < 10){
+							elem.css("background-color", "orange");
+						} else {
+							elem.css("background-color", "red");
+						}		
+					}
+				}
+			);			
     	}
-	}
-}]);
-
-angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps.progress', [])
-.directive('vgHeatmap', [function() {
-	return {
-		restrict: 'E',
-		require: '^videogular',
-		link: function($scope, elem, attr, API) {
-			var left = 0;
-			var percentTime = 0;
-
-			function startPercent(startVal) {
-				if (startVal !== undefined){
-					left = (startVal.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);		
-				}
-				elem.css("left", left + "%");
-				elem.css("width", "0%");
-			}
-
-			function onUpdateTime(newCurrentTime) {
-				if (newCurrentTime && API.totalTime) {
-					percentTime = (newCurrentTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000) - left;
-					elem.css("width", percentTime + "%");
-				}
-			}
-
-			function onComplete() {
-				percentTime = 0;
-				elem.css("width", percentTime + "%");
-			}
-
-			$scope.$watch(
-				function () {
-					return API.currentTime;
-				},
-				function (newVal, oldVal) {
-					onUpdateTime(newVal);
-				}
-			);
-
-			$scope.$watch(
-				function () {
-					return $scope.currentPeriod.start;
-				},
-				function (newVal, oldVal) {
-					startPercent(newVal);
-				}
-			);
-
-			$scope.$watch(
-				function () {
-					return API.isCompleted;
-				},
-				function (newVal, oldVal) {
-					onComplete(newVal);
-				}
-			);
-		}
 	}
 }]);
