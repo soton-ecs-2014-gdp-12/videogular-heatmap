@@ -64,6 +64,32 @@ plugins: {
 						frequency : '11'
 					},
 				],
+		colours: [
+					{
+						upto: '2',
+						colour: 'indigo',
+					},
+					{
+						upto: '4',
+						colour: 'blue',
+					},
+					{
+						upto: '6',
+						colour: 'green',
+					},
+					{
+						upto: '8',
+						colour: 'yellow',
+					},
+					{
+						upto: '10',
+						colour: 'orange',
+					},
+					{
+						upto: '+',
+						colour: 'red',
+					},
+				],
 	},
 },
 ```

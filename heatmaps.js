@@ -1,6 +1,5 @@
 'use strict';
-angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', 
-['uk.ac.soton.ecs.videogular.plugins.heatmaps.completed'])
+angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 
 .directive('vgHeatmaps', ["VG_STATES", function(VG_STATES) {
 	return {
@@ -22,9 +21,8 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps',
 			updateTheme($scope.theme);
 		}
 	}
-}]);
+}])
 
-angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps.completed', [])
 .directive('vgCompletedHeatmap',[function() {
 	return {
 		restrict: 'E',
@@ -47,24 +45,19 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps.completed', [])
 						elem.css("left", left + "%");
 		
 						val = $scope.$eval(attr.$attr.finish);
-						var endTime = new Date(val.substr(5,val.length-5));
-						console.log(endTime);
+						var endTime = new Date(val.substr(5,val.length-5)); //delete 'Date ' from front
 						var right = ((API.totalTime.getTime() - endTime.getTime()) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
 						elem.css("right", right + "%");
 		
+						var colours = $scope.$parent.$parent.heatmaps.colours;
 						var val = $scope.$eval(attr.$attr.frequency);
-						if (val == 1){
-							elem.css("background-color", "indigo");
-						} else if (val < 4){
-							elem.css("background-color", "blue");
-						} else if (val < 6){
-							elem.css("background-color", "green");
-						} else if (val < 8){
-							elem.css("background-color", "yellow");
-						} else if (val < 10){
-							elem.css("background-color", "orange");
-						} else {
-							elem.css("background-color", "red");
+						var i = 0;
+						while (i < colours.length){
+							if (colours[i].upto == '+' || parseInt(val) < colours[i].upto){
+								elem.css("background-color", colours[i].colour);
+								break;	
+							}
+							i++;
 						}		
 					}
 				}
