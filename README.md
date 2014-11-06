@@ -93,3 +93,4 @@ plugins: {
 	},
 },
 ```
+As shown for setting a colour above the final limit use `'+'` in the `upto` field.
