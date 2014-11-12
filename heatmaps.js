@@ -5,7 +5,7 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 	return {
 		restrict: 'E',
 		require: '^videogular',
-		templateUrl: 'bower_components/videogular-heatmaps/heatmaps.html',
+		templateUrl: 'bower_components/videogular-heatmap/heatmaps.html',
 		scope: {
 			heatmaps: '=vgHeatmapsConfig',
 			theme: '=vgHeatmapsTheme',
