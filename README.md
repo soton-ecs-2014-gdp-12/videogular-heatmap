@@ -10,7 +10,7 @@ First, import the JavaScript file `heatmaps.js`, then add the dependency `uk.ac.
 
 Next, add a `<vg-heatmaps>` element as a child of the `<vg-scrubbar>` of your Videogular player. Its `vg-heatmaps-config` attribute should be an object in your parent scope containing the heatmaps (see below), and the `vg-heatmaps-theme` attribute should point to the URL of a CSS file, just like Videogular's [`vg-theme` attribute](https://github.com/2fdevs/videogular/wiki/Themes).
 
-For example, [Videogular's example 2](http://videogular.com/examples/example02.html) with cuepoints added would look like this:
+For example, [Videogular's example 2](http://videogular.com/examples/example02.html) with a heatmap added would look like this:
 
 ```html
 <videogular vg-player-ready="onPlayerReady" vg-theme="config.theme.url">
@@ -21,7 +21,7 @@ For example, [Videogular's example 2](http://videogular.com/examples/example02.h
 		<vg-timedisplay>{{ API.currentTime | date:'mm:ss' }}</vg-timedisplay>
 		<vg-scrubBar>
 			<vg-scrubbarcurrenttime></vg-scrubbarcurrenttime>
-			<vg-heatmaps vg-heatmaps-config="config.plugins.heatmaps" vg-cuepoints-theme="config.plugins.heatmaps.theme.url"></vg-heatmaps>
+			<vg-heatmaps vg-heatmaps-config="config.plugins.heatmaps" vg-heatmaps-theme="config.plugins.heatmaps.theme.url"></vg-heatmaps>
 		</vg-scrubBar>
 		<vg-timedisplay>{{ API.timeLeft | date:'mm:ss' }}</vg-timedisplay>
 		<vg-volume>
