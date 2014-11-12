@@ -1,11 +1,11 @@
 'use strict';
 angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 
-.directive('vgHeatmaps', ["VG_STATES", function(VG_STATES) {
+.directive('vgHeatmaps', [function() {
 	return {
 		restrict: 'E',
 		require: '^videogular',
-		templateUrl: 'heatmaps.html',
+		templateUrl: 'bower_components/videogular-heatmaps/heatmaps.html',
 		scope: {
 			heatmaps: '=vgHeatmapsConfig',
 			theme: '=vgHeatmapsTheme',
