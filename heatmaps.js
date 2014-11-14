@@ -39,8 +39,8 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 				function () {
 					return API.totalTime;
 				},
-				function (newVal, oldVal) {	
-					if (newVal !== 0 && (oldVal == 0 || newVal != oldVal)){
+				function (newVal, oldVal) {
+					if (newVal !== 0 && (oldVal === 0 || newVal !== oldVal)){
 						var startTime = $scope.$eval(attr.$attr.begin);
 						var left = (startTime * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
 						if (left<100){
@@ -49,10 +49,10 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 							elem.css("left", "0%");
 						}
 		
-						val = $scope.$eval(attr.$attr.finish);
+						var val = $scope.$eval(attr.$attr.finish);
 						var endTime = val;
 						var right = ((API.totalTime.getTime() - endTime) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
-						if(right>0 && right<100) {						
+						if(right>0 && right<100) {
 							elem.css("right", right + "%");
 						} else {
 							elem.css("right", "0%");
