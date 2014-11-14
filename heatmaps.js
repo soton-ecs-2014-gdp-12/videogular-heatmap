@@ -1,4 +1,6 @@
+(function() {
 'use strict';
+
 angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 
 .directive('vgHeatmaps', [function() {
@@ -20,7 +22,7 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 			}
 			updateTheme($scope.theme);
 		}
-	}
+	};
 }])
 
 .directive('vgCompletedHeatmap',[function() {
@@ -55,20 +57,22 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 						} else {
 							elem.css("right", "0%");
 						}
-		
+
 						var colours = $scope.$parent.$parent.heatmaps.colours;
-						var val = $scope.$eval(attr.$attr.frequency);
+						val = $scope.$eval(attr.$attr.frequency);
 						var i = 0;
 						while (i < colours.length){
-							if (colours[i].upto == '+' || parseInt(val) < colours[i].upto){
+							if (colours[i].upto === '+' || parseInt(val) < colours[i].upto) {
 								elem.css("background-color", colours[i].colour);
-								break;	
+								break;
 							}
 							i++;
-						}		
+						}
 					}
 				}
-			);			
-    	}
-	}
+			);
+		}
+	};
 }]);
+
+})();
