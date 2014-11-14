@@ -38,16 +38,23 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 					return API.totalTime;
 				},
 				function (newVal, oldVal) {	
-					if (newVal !== 0 && (oldVal == 0 || newVal.getTime() != oldVal.getTime())){
-						var val = $scope.$eval(attr.$attr.begin);
-						var startTime = new Date(val);
-						var left = (startTime.getTime() * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
-						elem.css("left", left + "%");
+					if (newVal !== 0 && (oldVal == 0 || newVal != oldVal)){
+						var startTime = $scope.$eval(attr.$attr.begin);
+						var left = (startTime * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
+						if (left<100){
+							elem.css("left", left + "%");
+						} else if (left<0) {
+							elem.css("left", "0%");
+						}
 		
 						val = $scope.$eval(attr.$attr.finish);
-						var endTime = new Date(val); 
-						var right = ((API.totalTime.getTime() - endTime.getTime()) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
-						elem.css("right", right + "%");
+						var endTime = val;
+						var right = ((API.totalTime.getTime() - endTime) * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
+						if(right>0 && right<100) {						
+							elem.css("right", right + "%");
+						} else {
+							elem.css("right", "0%");
+						}
 		
 						var colours = $scope.$parent.$parent.heatmaps.colours;
 						var val = $scope.$eval(attr.$attr.frequency);
