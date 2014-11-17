@@ -40,7 +40,12 @@ angular.module('uk.ac.soton.ecs.videogular.plugins.heatmaps', [])
 					return API.totalTime;
 				},
 				function (newVal, oldVal) {
-					if (newVal !== 0 && (oldVal === 0 || newVal !== oldVal)){
+					// some things will be 0 when the totalTime in unknown
+					// otherwise, a Date will be given
+
+					// this tests if previously the totalTime was unknown, and now it is
+					// not
+					if (oldVal === 0 && newVal !== 0) {
 						var startTime = $scope.$eval(attr.$attr.begin);
 						var left = (startTime * -1 / 1000) * 100 / (API.totalTime.getTime() * -1 / 1000);
 						if (left<100){
