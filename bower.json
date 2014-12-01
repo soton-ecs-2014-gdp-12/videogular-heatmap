@@ -1,0 +1,23 @@
+{
+  "name": "videogular-heatmap",
+  "version": "0.1.0",
+  "homepage": "https://github.com/soton-ecs-2014-gdp-12/videogular-heatmap",
+  "authors": [
+    "Maria Lynch"
+  ],
+  "description": "Videogular plugin to show a heatmap in the scrub bar",
+  "main": "heatmaps.js",
+  "keywords": [
+    "videogular",
+    "heatmap",
+    "scrub"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
