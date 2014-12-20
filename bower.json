@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "homepage": "https://github.com/soton-ecs-2014-gdp-12/videogular-heatmap",
   "authors": [
+    "Christopher Baines",
     "Maria Lynch"
   ],
   "description": "Videogular plugin to show a heatmap in the scrub bar",
