@@ -41,6 +41,8 @@ plugins: {
 		theme: {
 			url: "heatmaps.css",
 				// Replace with the path appropriate to your project
+			showtext: true,
+				//replace with false if you do not want the frequencies to show on the scrub bar
 		},
 		sections: [
 					{
