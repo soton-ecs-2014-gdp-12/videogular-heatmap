@@ -1,1 +1,1 @@
-<vg-completed-heatmap begin={{section.start}} finish={{section.end}} frequency={{section.frequency}} ng-repeat="section in heatmaps.sections"></vg-completed-heatmap>
+<vg-completed-heatmap begin={{section.start}} finish={{section.end}} frequency={{section.frequency}} show-freq={{heatmaps.theme.textshow}} config="heatmaps" ng-repeat="section in heatmaps.sections">{{section.frequency}}</vg-completed-heatmap>
