@@ -1,1 +1,6 @@
-<vg-completed-heatmap begin={{section.start}} finish={{section.end}} frequency={{section.frequency}} show-freq={{heatmaps.theme.textshow}} config="heatmaps" ng-repeat="section in heatmaps.sections">{{section.frequency}}</vg-completed-heatmap>
+<vg-completed-heatmap begin={{section.start}} finish={{section.end}} frequency={{section.frequency}} show-freq={{heatmaps.theme.textshow}} config="heatmaps" ng-repeat="section in heatmaps.sections">
+	<span class="hidden">
+		Heatmap data. Section start:{{section.start}}, Section finish:{{section.end}}, Section frequency: 
+	</span>
+	{{section.frequency}}
+</vg-completed-heatmap>

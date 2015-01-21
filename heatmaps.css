@@ -23,3 +23,14 @@ videogular vg-heatmaps vg-completed-heatmap {
 	height: 50px;
 
 }
+
+/* from http://webaim.org/techniques/css/invisiblecontent/ */
+.hidden
+{
+	position:absolute;
+	left:-10000px;
+	top:auto;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+}
